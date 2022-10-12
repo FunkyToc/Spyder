@@ -24,6 +24,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "zoom",
+                    "type": "Button",
+                    "id": "f76d5f17-1d8b-49bf-9464-8d5dd34540a6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "run",
                     "type": "Button",
                     "id": "7adea7a4-61a2-4e3e-a601-737a8975af23",
@@ -203,6 +212,28 @@
                     "processors": "ScaleVector2(x=0.3,y=0.3)",
                     "groups": "",
                     "action": "look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ee41e2a4-e40e-4867-b551-e8525cc8ddca",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a2bc8bbc-0e63-4b24-93f0-477a13660112",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "zoom",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
