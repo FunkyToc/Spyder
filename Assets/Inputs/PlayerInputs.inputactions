@@ -15,6 +15,24 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "run",
+                    "type": "Button",
+                    "id": "7adea7a4-61a2-4e3e-a601-737a8975af23",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "release",
+                    "type": "Button",
+                    "id": "8a745521-401e-4410-b5a6-ebece55f5c31",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "look",
                     "type": "Value",
                     "id": "c3af527c-e41c-41ce-a12a-4d756c4ac407",
@@ -27,24 +45,6 @@
                     "name": "zoom",
                     "type": "Button",
                     "id": "f76d5f17-1d8b-49bf-9464-8d5dd34540a6",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "run",
-                    "type": "Button",
-                    "id": "7adea7a4-61a2-4e3e-a601-737a8975af23",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "jump",
-                    "type": "Button",
-                    "id": "8a745521-401e-4410-b5a6-ebece55f5c31",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -129,50 +129,6 @@
                 },
                 {
                     "name": "",
-                    "id": "ebe8951d-77c4-4aa1-8cd4-5a9bfd433e18",
-                    "path": "<Keyboard>/shift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "run",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "376477f7-e290-4b9e-b50d-3f996451218a",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "run",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "d1082ff4-a74a-4ed9-88e0-5580503cb379",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "1ff8df8c-b0a0-4ac3-90d9-330a766e0493",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "785eeeec-66b7-42c8-bc48-03dcfe54daab",
                     "path": "<Keyboard>/alt",
                     "interactions": "",
@@ -234,6 +190,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ebe8951d-77c4-4aa1-8cd4-5a9bfd433e18",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "376477f7-e290-4b9e-b50d-3f996451218a",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d1082ff4-a74a-4ed9-88e0-5580503cb379",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "release",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ff8df8c-b0a0-4ac3-90d9-330a766e0493",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "release",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

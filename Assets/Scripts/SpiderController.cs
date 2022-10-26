@@ -6,6 +6,8 @@
 using UnityEngine;
 using System.Collections;
 using Raycasting;
+using UnityEngine.InputSystem;
+using System;
 
 /*
  * This class needs a reference to the Spider class and calls the walk and turn functions depending on player input.
@@ -21,12 +23,86 @@ public class SpiderController : MonoBehaviour {
     [Header("Camera")]
     public SmoothCamera smoothCam;
 
-    void FixedUpdate() {
+    [Header("Inputs")]
+    [SerializeField] InputActionReference _move;
+    [SerializeField] InputActionReference _run;
+    [SerializeField] InputActionReference _release;
+    Vector3 _moveInput = Vector2.zero;
+    bool _runInput = false;
+    bool _releaseInput = false;
+
+    void Start()
+    {
+        _move.action.performed += MovePerformInput;
+        _move.action.canceled += MoveCancelInput;
+
+        _run.action.started += RunStartInput;
+        _run.action.canceled += RunCancelInput;
+
+        _release.action.started += ReleaseStartInput;
+        _release.action.canceled += ReleaseCancelInput;
+    }
+
+    void OnDestroy()
+    {
+        _move.action.performed -= MovePerformInput;
+        _move.action.canceled -= MoveCancelInput;
+
+        _run.action.started -= RunStartInput;
+        _run.action.canceled -= RunCancelInput;
+
+        _release.action.started -= ReleaseStartInput;
+        _release.action.canceled -= ReleaseCancelInput;
+    }
+
+    void MovePerformInput(InputAction.CallbackContext cc)
+    {
+        _moveInput = cc.ReadValue<Vector2>();
+    }
+
+    void MoveCancelInput(InputAction.CallbackContext cc)
+    {
+        _moveInput = Vector2.zero;
+    }
+
+    void RunStartInput(InputAction.CallbackContext cc)
+    {
+        _runInput = true;
+    }
+
+    void RunCancelInput(InputAction.CallbackContext cc)
+    {
+        _runInput = false;
+    }
+
+    void ReleaseStartInput(InputAction.CallbackContext cc)
+    {
+        _releaseInput = true;
+    }
+
+    void ReleaseCancelInput(InputAction.CallbackContext cc)
+    {
+        _releaseInput = false;
+    }
+
+    void Update()
+    {
+        spider.setGroundcheck(!_releaseInput);
+    }
+
+    void FixedUpdate()
+    {
         //** Movement **//
         Vector3 input = getInput();
 
-        if (Input.GetKey(KeyCode.LeftShift)) spider.run(input);
-        else spider.walk(input);
+        if (_runInput)
+        {
+            spider.run(input);
+        }
+        else
+        {
+            spider.walk(input);
+        }
 
         Quaternion tempCamTargetRotation = smoothCam.getCamTargetRotation();
         Vector3 tempCamTargetPosition = smoothCam.getCamTargetPosition();
@@ -35,15 +111,11 @@ public class SpiderController : MonoBehaviour {
         smoothCam.setTargetPosition(tempCamTargetPosition);
     }
 
-    void Update() {
-        //Hold down Space to deactivate ground checking. The spider will fall while space is hold.
-        spider.setGroundcheck(!Input.GetKey(KeyCode.Space));
-    }
-
-    private Vector3 getInput() {
+    private Vector3 getInput()
+    {
         Vector3 up = spider.transform.up;
         Vector3 right = spider.transform.right;
-        Vector3 input = Vector3.ProjectOnPlane(smoothCam.getCameraTarget().forward, up).normalized * Input.GetAxis("Vertical") + (Vector3.ProjectOnPlane(smoothCam.getCameraTarget().right, up).normalized * Input.GetAxis("Horizontal"));
+        Vector3 input = Vector3.ProjectOnPlane(smoothCam.getCameraTarget().forward, up).normalized * _moveInput.y + (Vector3.ProjectOnPlane(smoothCam.getCameraTarget().right, up).normalized * _moveInput.x);
         Quaternion fromTo = Quaternion.AngleAxis(Vector3.SignedAngle(up, spider.getGroundNormal(), right), right);
         input = fromTo * input;
         float magnitude = input.magnitude;
