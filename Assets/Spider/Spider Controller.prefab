@@ -1,5 +1,95 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2994122016137751569
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7991276847424343995}
+  - component: {fileID: 1265459567230354826}
+  - component: {fileID: 1620144089006886893}
+  m_Layer: 31
+  m_Name: Surface Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7991276847424343995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2994122016137751569}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.005, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.005, z: 0.02}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9068383502604533311}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1265459567230354826
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2994122016137751569}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1620144089006886893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2994122016137751569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588babe3865362947ae5302506502195, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &4863148031323982188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9068383502604533311}
+  m_Layer: 31
+  m_Name: Physics
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9068383502604533311
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4863148031323982188}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7991276847424343995}
+  m_Father: {fileID: 8634589293312570788}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8634589291867471547
 GameObject:
   m_ObjectHideFlags: 0
@@ -2388,7 +2478,7 @@ Transform:
   m_Children:
   - {fileID: 8634589293556137537}
   m_Father: {fileID: 8634589293312570788}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &8634589293028226335
 Animator:
@@ -3438,6 +3528,7 @@ GameObject:
   - component: {fileID: 8634589293312570788}
   - component: {fileID: 8634589293312570790}
   - component: {fileID: 2058039777}
+  - component: {fileID: 2662787494418026118}
   - component: {fileID: 6602444994393196865}
   - component: {fileID: 7405883807623348973}
   - component: {fileID: 5356263202611163170}
@@ -3462,6 +3553,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8634589293613505109}
+  - {fileID: 9068383502604533311}
   - {fileID: 8634589293028226328}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -3496,6 +3588,18 @@ CapsuleCollider:
   m_Height: 0.022
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2662787494418026118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8634589293312570784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac353dc5ac93bc841bda2f1a38ab6ef8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6602444994393196865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3509,8 +3613,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showDebug: 0
-  walkSpeed: 3
-  runSpeed: 6
+  walkSpeed: 2.5
+  runSpeed: 5
   turnSpeed: 4
   walkDrag: 0.9
   capsuleCollider: {fileID: 2058039777}

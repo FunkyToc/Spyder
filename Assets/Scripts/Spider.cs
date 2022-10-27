@@ -36,6 +36,8 @@ public class Spider : MonoBehaviour {
     public float turnSpeed;
     [Range(0.001f, 1)]
     public float walkDrag;
+    float _surfaceSpeedMultiplier = 1f;
+    public float SurfaceSpeedMultiplier { get => _surfaceSpeedMultiplier; set => _surfaceSpeedMultiplier = value; }
 
     [Header("Grounding")]
     public CapsuleCollider capsuleCollider;
@@ -256,12 +258,12 @@ public class Spider : MonoBehaviour {
 
     public void walk(Vector3 direction) {
         if (direction.magnitude < Mathf.Epsilon) return;
-        move(direction, walkSpeed);
+        move(direction, walkSpeed * _surfaceSpeedMultiplier);
     }
 
     public void run(Vector3 direction) {
         if (direction.magnitude < Mathf.Epsilon) return;
-        move(direction, runSpeed);
+        move(direction, runSpeed * _surfaceSpeedMultiplier);
     }
 
     //** Ground Check Method **//

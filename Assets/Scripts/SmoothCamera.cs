@@ -16,8 +16,8 @@ using UnityEngine;
  */
 
 [RequireComponent(typeof(Camera))]
-public class SmoothCamera : CameraAbstract {
-
+public class SmoothCamera : CameraAbstract 
+{
     [Header("Camera Roll Damp")]
     [Range(0, 1)]
     public float rollDamp;
