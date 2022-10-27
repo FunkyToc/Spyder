@@ -4227,9 +4227,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   showDebug: 0
   observedObject: {fileID: 8634589293312570788}
+  _look: {fileID: -5730767630776911756, guid: ea9eaff405b1f82458acbbde52f5784e, type: 3}
   translationSpeed: 4
   rotationSpeed: 4
-  XSensitivity: 2
+  XSensitivity: 2.5
   YSensitivity: 2
   positionInterpolationType: 0
   camUpperAngleMargin: 10
@@ -4269,7 +4270,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0

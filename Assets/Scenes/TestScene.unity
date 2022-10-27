@@ -17432,6 +17432,11 @@ PrefabInstance:
       propertyPath: m_InnerSpotAngle
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 5501946535463098713, guid: 29f393efdc386ee41aee6077912722cf,
+        type: 3}
+      propertyPath: m_BounceIntensity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7155895963209585416, guid: 29f393efdc386ee41aee6077912722cf,
         type: 3}
       propertyPath: _patrolPattern
@@ -67626,16 +67631,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3969838419008732218, guid: 0f80abe9758af794c94d829c20727117,
-        type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5356263202611163170, guid: 0f80abe9758af794c94d829c20727117,
-        type: 3}
-      propertyPath: maxStepTime
-      value: 0.3
-      objectReference: {fileID: 0}
     - target: {fileID: 7644836829583018044, guid: 0f80abe9758af794c94d829c20727117,
         type: 3}
       propertyPath: m_IsActive

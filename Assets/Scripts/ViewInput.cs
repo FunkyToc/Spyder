@@ -10,8 +10,6 @@ public class ViewInput : MonoBehaviour
     [SerializeField] InputActionReference _zoomInput;
     [SerializeField] CinemachineFreeLook _freelookCam;
 
-    bool isZooming = false;
-
     void Start()
     {
         _zoomInput.action.started += ZoomStarted;

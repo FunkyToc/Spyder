@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Raycasting;
+using UnityEngine.InputSystem;
+using System;
 
 /* 
  * An Abstract class for camera movement.
@@ -36,6 +38,10 @@ public abstract class CameraAbstract : MonoBehaviour {
 
     protected Transform camTarget;
     protected Camera cam;
+
+    [Header("Inputs")]
+    [SerializeField] InputActionReference _look;
+    Vector2 _lookInput = Vector2.zero;
 
     [Header("Smoothness")]
     public float translationSpeed;
@@ -110,14 +116,36 @@ public abstract class CameraAbstract : MonoBehaviour {
         hideRayCamToPlayer = new SphereCast(transform.position, observedObject.position, rayRadiusObstructionHiding * transform.lossyScale.y * 0.01f, transform, observedObject);
     }
 
+    void Start()
+    {
+        _look.action.performed += LookPerformInput;
+        _look.action.canceled += LookCancelInput;
+    }
+
+    void OnDestroy()
+    {
+        _look.action.performed -= LookPerformInput;        
+        _look.action.canceled -= LookCancelInput;
+    }
+
+    void LookPerformInput(InputAction.CallbackContext cc)
+    {
+        _lookInput = cc.ReadValue<Vector2>();
+    }
+
+    void LookCancelInput(InputAction.CallbackContext cc)
+    {
+        _lookInput = Vector2.zero;
+    }
+
     /*
     * Update performs the cameras target movement. This includes mouse input as well as solving clipping problems.
     * Override this Update call in an inheriting class but call this base implementation first.
     * This allows the inheriting classes to implement their own camera target manipulation.
     */
     protected virtual void Update() {
-        RotateCameraHorizontal(Input.GetAxis("Mouse X") * XSensitivity, false);
-        RotateCameraVertical(-Input.GetAxis("Mouse Y") * YSensitivity, false);
+        RotateCameraHorizontal(_lookInput.x * XSensitivity, false);
+        RotateCameraVertical(-_lookInput.y * YSensitivity, false);
 
         if (!cam.enabled) return; // I hope this only returns for this function and not the whole new update implementation of a inheriting class.
         if (enableClipZoom) clipZoom();
