@@ -74,7 +74,7 @@ public class LookAtSlerp : MonoBehaviour
 
     private Vector3 _targetStartPos;
     private Vector3 _lookPos;
-    private GameObject _currentTarget;
+    private GameObject _currentTarget = null;
 
     void Start()
     {
@@ -98,25 +98,73 @@ public class LookAtSlerp : MonoBehaviour
 
         while (true)
         {
-            // target ?? patrolling
-            _lookPos = GetLookPos();
-            LookAtTarget();
+            switch (_currentTarget)
+            {
+                case null:
+                    Patrol();
+                    break;
+
+                default :
+                    Follow();
+                    break;
+            }
 
             yield return waiter;
         }
     }
 
-    void LookAtTarget()
+    void Patrol()
     {
-        _lookPos.x = _lockX ? transform.localPosition.x : _lookPos.x;
-        _lookPos.y = _lockY ? transform.localPosition.y : _lookPos.y;
-        Quaternion lookRotation = Quaternion.LookRotation(_lookPos - transform.position);
+        switch (_patrolPattern)
+        {
+            case PatrolPattern.Static:
+                _lookPos = (_staticPatrolPos != null ? _staticPatrolPos.position : _targetStartPos);
+                break;
+
+            case PatrolPattern.Rotation:
+                transform.rotation = transform.rotation * Quaternion.Euler(0, _rotationSpeedPatrol * _updateFrequency, 0);
+                break;
+
+            case PatrolPattern.PatrolList:
+                // TODO
+                _lookPos = Vector3.zero;
+                break;
+
+            default:
+                _lookPos = _targetStartPos;
+                break;
+        }
+
+        CheckTarget();
+    }
+
+    void Follow()
+    {
+        _lookPos = _currentTarget.transform.position;        
+        if (!CheckTarget())
+        {
+            _lookPos = _targetStartPos;
+        }
+
+        LookAtTarget(_lookPos);
+    }
+
+    void LookAtTarget(Vector3 pos)
+    {
+        pos.x = _lockX ? transform.localPosition.x : pos.x;
+        pos.y = _lockY ? transform.localPosition.y : pos.y;
+        Quaternion lookRotation = Quaternion.LookRotation(pos - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, _updateFrequency * _rotationSpeed);
     }
 
-    Vector3 GetLookPos()
+    /*
+     * Update _currentTarget
+     * Set it to GameObject if found, or null if not found
+     * Return bool : found or not found
+     */
+    bool CheckTarget()
     {
-        Vector3 selectedTarget = Vector3.zero;
+        GameObject selectedTarget = null;
         
         // check targets
         if (_targets != null || _detectionAreas != null)
@@ -136,13 +184,14 @@ public class LookAtSlerp : MonoBehaviour
                             switch (_lookAtPriority)
                             {
                                 case LookAtPriority.ListOrder:
-                                    return t.position;
+                                    _currentTarget = t.gameObject;
+                                    return true; ;
 
                                 case LookAtPriority.Closest:
-                                    if (selectedTarget == Vector3.zero) selectedTarget = t.position; // first iteration
-                                    if ((t.position - transform.position).magnitude < (selectedTarget - transform.position).magnitude)
+                                    if (selectedTarget == null) selectedTarget = t.gameObject; // first iteration
+                                    if ((t.position - transform.position).magnitude < (selectedTarget.transform.position - transform.position).magnitude)
                                     {
-                                        selectedTarget = t.position;
+                                        selectedTarget = t.gameObject;
                                     }
                                     break;
                             }
@@ -153,25 +202,15 @@ public class LookAtSlerp : MonoBehaviour
         }
 
         // found target
-        if (selectedTarget != Vector3.zero) return selectedTarget;
-
-        // patrolling
-        switch (_patrolPattern)
+        if (selectedTarget != null)
         {
-            case PatrolPattern.Static:
-                return (_staticPatrolPos != null ? _staticPatrolPos.position : _targetStartPos);
-
-            case PatrolPattern.Rotation:
-                // TODO
-                return (Quaternion.Euler(0, _rotationSpeedPatrol * _updateFrequency, 0) * transform.forward);
-
-            case PatrolPattern.PatrolList:
-                // TODO
-                return Vector3.zero;
-
-            default:
-                return _targetStartPos;
+            _currentTarget = selectedTarget;
+            return true;
         }
+
+        // no target
+        _currentTarget = null;
+        return false;
     }
 
 }

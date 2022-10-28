@@ -205,7 +205,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 0
-  _rotationSpeed: 4
+  _rotationSpeed: 2.5
   _lockX: 0
   _lockY: 0
 --- !u!1 &1808467618
@@ -338,9 +338,9 @@ Light:
   m_Shape: 0
   m_Color: {r: 0.9150943, g: 0, b: 0.050117526, a: 1}
   m_Intensity: 1000000
-  m_Range: 80
+  m_Range: 66
   m_SpotAngle: 40
-  m_InnerSpotAngle: 22
+  m_InnerSpotAngle: 20
   m_CookieSize: 10
   m_Shadows:
     m_Type: 1
