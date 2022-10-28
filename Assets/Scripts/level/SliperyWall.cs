@@ -40,6 +40,7 @@ public class SliperyWall : MonoBehaviour
             if (_sliperyCoroutine != null)
             {
                 StopCoroutine(_sliperyCoroutine);
+                _rb.AddForce(Vector3.up * _sliperyFactor * 100);
                 _sliperyCoroutine = null;
             }
             
