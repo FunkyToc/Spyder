@@ -72,18 +72,13 @@ public class LookAtSlerp : MonoBehaviour
         [Tooltip("When losing target, after search it, reset position before patroling again.")]
         [SerializeField, Range(0.0f, 10.0f)] float _rotationResetDelay = 1f;
 
-        [Tooltip("Lock X gameobject rotation")]
-        [SerializeField] bool _lockX = false;
-
-        [Tooltip("Lock Y gameobject rotation")]
-        [SerializeField] bool _lockY = false;
-
     private Vector3 _targetStartPos;
     private Vector3 _lookPos;
     private bool standbyResetDelay = false;
     private GameObject _currentTarget = null;
     Coroutine _seekTargetCoroutine = null;
     Coroutine _resetPatrolCoroutine = null;
+    Coroutine _restartPatrolCoroutine = null;
 
     void Start()
     {
@@ -98,7 +93,7 @@ public class LookAtSlerp : MonoBehaviour
 
     void OnDestroy()
     {
-        StopCoroutine(UpdateLookRotation());
+        StopAllCoroutines();
     }
 
     IEnumerator UpdateLookRotation()
@@ -165,8 +160,6 @@ public class LookAtSlerp : MonoBehaviour
 
     void LookAtTarget(Vector3 pos)
     {
-        pos.x = _lockX ? transform.localPosition.x : pos.x;
-        pos.y = _lockY ? transform.localPosition.y : pos.y;
         Quaternion lookRotation = Quaternion.LookRotation(pos - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, _updateFrequency * _rotationSpeed);
     }
@@ -237,6 +230,18 @@ public class LookAtSlerp : MonoBehaviour
 
     void ResetPatrol()
     {
+        standbyResetDelay = true;
+        if (_seekTargetCoroutine != null) StopCoroutine(_seekTargetCoroutine);
+        if (_resetPatrolCoroutine != null) StopCoroutine(_resetPatrolCoroutine);
+        if (_restartPatrolCoroutine != null) StopCoroutine(_restartPatrolCoroutine);
+        _seekTargetCoroutine = StartCoroutine(SeekTargetCoroutine());
+        _restartPatrolCoroutine = StartCoroutine(RestartPatrolCoroutine());
+    }
+
+    IEnumerator SeekTargetCoroutine()
+    {
+        yield return new WaitForSeconds(_seekTargetTime);
+
         switch (_patrolPattern)
         {
             case PatrolPattern.Static:
@@ -257,17 +262,17 @@ public class LookAtSlerp : MonoBehaviour
                 break;
         }
 
-        standbyResetDelay = true;
-        if (_seekTargetCoroutine != null) StopCoroutine(_seekTargetCoroutine);
-        if (_resetPatrolCoroutine != null) StopCoroutine(_resetPatrolCoroutine);
-        _seekTargetCoroutine = StartCoroutine(SeekTargetCoroutine());
-        _resetPatrolCoroutine = StartCoroutine(RestartPatrolCoroutine());
+        LookAtTarget(_lookPos);
+        StartCoroutine(ResetPatrolCoroutine());
     }
 
-    IEnumerator SeekTargetCoroutine()
+    IEnumerator ResetPatrolCoroutine()
     {
-        yield return new WaitForSeconds(_seekTargetTime);
-        LookAtTarget(_lookPos);
+        while (standbyResetDelay)
+        {
+            LookAtTarget(_lookPos);
+            yield return new WaitForSeconds(_updateFrequency);
+        }
     }
 
     IEnumerator RestartPatrolCoroutine()
