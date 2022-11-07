@@ -55,7 +55,7 @@ public class LookAtSlerp : MonoBehaviour
         [SerializeField] Transform _staticPatrolPos;
 
         [Tooltip("If Rotation pattern, define the rotation speed per seconds. Can be a negative value.")]
-        [SerializeField,Range(0f,359f)] float _rotationSpeedPatrol = 45f;
+        [SerializeField,Range(0f,359f)] float _rotationPatrolSpeed = 45f;
 
         [Tooltip("If PatrolList pattern, iterate with the list")]
         [SerializeField] List<PatrolPoint> _patrolPoints;
@@ -66,6 +66,12 @@ public class LookAtSlerp : MonoBehaviour
         [Tooltip("Look rotation speed multiplier.")]
         [SerializeField, Range(0.0f, 10.0f)] float _rotationSpeed = 3f;
 
+        [Tooltip("When losing target, keep searching it fiew seconds.")]
+        [SerializeField, Range(0.0f, 10.0f)] float _seekTargetTime = 2f;
+
+        [Tooltip("When losing target, after search it, reset position before patroling again.")]
+        [SerializeField, Range(0.0f, 10.0f)] float _rotationResetDelay = 1f;
+
         [Tooltip("Lock X gameobject rotation")]
         [SerializeField] bool _lockX = false;
 
@@ -74,7 +80,10 @@ public class LookAtSlerp : MonoBehaviour
 
     private Vector3 _targetStartPos;
     private Vector3 _lookPos;
+    private bool standbyResetDelay = false;
     private GameObject _currentTarget = null;
+    Coroutine _seekTargetCoroutine = null;
+    Coroutine _resetPatrolCoroutine = null;
 
     void Start()
     {
@@ -108,31 +117,35 @@ public class LookAtSlerp : MonoBehaviour
                     Follow();
                     break;
             }
-
+            
             yield return waiter;
         }
     }
 
     void Patrol()
     {
-        switch (_patrolPattern)
+        if (!standbyResetDelay)
         {
-            case PatrolPattern.Static:
-                _lookPos = (_staticPatrolPos != null ? _staticPatrolPos.position : _targetStartPos);
-                break;
+            switch (_patrolPattern)
+            {
+                case PatrolPattern.Static:
+                    _lookPos = (_staticPatrolPos != null ? _staticPatrolPos.position : _targetStartPos);
+                    LookAtTarget(_lookPos);
+                    break;
 
-            case PatrolPattern.Rotation:
-                transform.rotation = transform.rotation * Quaternion.Euler(0, _rotationSpeedPatrol * _updateFrequency, 0);
-                break;
+                case PatrolPattern.Rotation:
+                    transform.rotation = transform.rotation * Quaternion.Euler(0, _rotationPatrolSpeed * _updateFrequency, 0);
+                    break;
 
-            case PatrolPattern.PatrolList:
-                // TODO
-                _lookPos = Vector3.zero;
-                break;
+                case PatrolPattern.PatrolList:
+                    // TODO
+                    _lookPos = Vector3.zero;
+                    break;
 
-            default:
-                _lookPos = _targetStartPos;
-                break;
+                default:
+                    _lookPos = _targetStartPos;
+                    break;
+            }
         }
 
         CheckTarget();
@@ -140,10 +153,11 @@ public class LookAtSlerp : MonoBehaviour
 
     void Follow()
     {
-        _lookPos = _currentTarget.transform.position;        
-        if (!CheckTarget())
+        _lookPos = _currentTarget.transform.position;
+
+        if (!CheckTarget()) // just lost target
         {
-            _lookPos = _targetStartPos;
+            ResetPatrol();
         }
 
         LookAtTarget(_lookPos);
@@ -181,19 +195,27 @@ public class LookAtSlerp : MonoBehaviour
                     {
                         if (coll.GetInstanceID() == coll2.GetInstanceID())
                         {
-                            switch (_lookAtPriority)
-                            {
-                                case LookAtPriority.ListOrder:
-                                    _currentTarget = t.gameObject;
-                                    return true; ;
+                            // raycast
+                            Debug.DrawRay(transform.position, t.transform.position - transform.position, Color.red, _updateFrequency);
+                            Physics.Raycast(transform.position, t.transform.position - transform.position, out var hit, 99f, LayerMask.GetMask("Player", "LevelBorder"));
 
-                                case LookAtPriority.Closest:
-                                    if (selectedTarget == null) selectedTarget = t.gameObject; // first iteration
-                                    if ((t.position - transform.position).magnitude < (selectedTarget.transform.position - transform.position).magnitude)
-                                    {
-                                        selectedTarget = t.gameObject;
-                                    }
-                                    break;
+                            if (hit.collider.name == t.name)
+                            {
+                                // if raycast true
+                                switch (_lookAtPriority)
+                                {
+                                    case LookAtPriority.ListOrder:
+                                        _currentTarget = t.gameObject;
+                                        return true; ;
+
+                                    case LookAtPriority.Closest:
+                                        if (selectedTarget == null) selectedTarget = t.gameObject; // first iteration
+                                        if ((t.position - transform.position).magnitude < (selectedTarget.transform.position - transform.position).magnitude)
+                                        {
+                                            selectedTarget = t.gameObject;
+                                        }
+                                        break;
+                                }
                             }
                         }
                     }
@@ -213,4 +235,44 @@ public class LookAtSlerp : MonoBehaviour
         return false;
     }
 
+    void ResetPatrol()
+    {
+        switch (_patrolPattern)
+        {
+            case PatrolPattern.Static:
+                _lookPos = (_staticPatrolPos != null ? _staticPatrolPos.position : _targetStartPos);
+                break;
+
+            case PatrolPattern.Rotation:
+                _lookPos = _targetStartPos;
+                break;
+
+            case PatrolPattern.PatrolList:
+                // first or current patrol point
+                _lookPos = Vector3.zero;
+                break;
+
+            default:
+                _lookPos = _targetStartPos;
+                break;
+        }
+
+        standbyResetDelay = true;
+        if (_seekTargetCoroutine != null) StopCoroutine(_seekTargetCoroutine);
+        if (_resetPatrolCoroutine != null) StopCoroutine(_resetPatrolCoroutine);
+        _seekTargetCoroutine = StartCoroutine(SeekTargetCoroutine());
+        _resetPatrolCoroutine = StartCoroutine(RestartPatrolCoroutine());
+    }
+
+    IEnumerator SeekTargetCoroutine()
+    {
+        yield return new WaitForSeconds(_seekTargetTime);
+        LookAtTarget(_lookPos);
+    }
+
+    IEnumerator RestartPatrolCoroutine()
+    {
+        yield return new WaitForSeconds(_seekTargetTime + _rotationResetDelay);
+        standbyResetDelay = false;
+    }
 }
