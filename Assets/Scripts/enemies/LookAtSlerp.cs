@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class LookAtSlerp : MonoBehaviour
 {
@@ -72,6 +73,12 @@ public class LookAtSlerp : MonoBehaviour
         [Tooltip("When losing target, after search it, reset position before patroling again.")]
         [SerializeField, Range(0.0f, 10.0f)] float _rotationResetDelay = 1f;
 
+
+    [Header("Events")]
+        public UnityEvent OnDetectionEnter;
+        public UnityEvent OnDetectionExit;
+
+
     private Vector3 _targetStartPos;
     private Vector3 _lookPos;
     private bool standbyResetDelay = false;
@@ -79,6 +86,7 @@ public class LookAtSlerp : MonoBehaviour
     Coroutine _seekTargetCoroutine = null;
     Coroutine _resetPatrolCoroutine = null;
     Coroutine _restartPatrolCoroutine = null;
+
 
     void Start()
     {
@@ -153,6 +161,7 @@ public class LookAtSlerp : MonoBehaviour
         if (!CheckTarget()) // just lost target
         {
             ResetPatrol();
+            OnDetectionExit?.Invoke();
         }
 
         LookAtTarget(_lookPos);
@@ -198,6 +207,7 @@ public class LookAtSlerp : MonoBehaviour
                                 switch (_lookAtPriority)
                                 {
                                     case LookAtPriority.ListOrder:
+                                        if (_currentTarget == null) OnDetectionEnter?.Invoke();
                                         _currentTarget = t.gameObject;
                                         return true; ;
 
@@ -219,6 +229,7 @@ public class LookAtSlerp : MonoBehaviour
         // found target
         if (selectedTarget != null)
         {
+            if (_currentTarget == null) OnDetectionEnter?.Invoke();
             _currentTarget = selectedTarget;
             return true;
         }

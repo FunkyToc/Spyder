@@ -27,10 +27,10 @@ public class DangerWall : MonoBehaviour
             {
                 // Insta kill
                 case Danger.Kill:
-                    GameManager.GM._dm.LastCheckPoint();
                     _OnCollide?.Invoke();
                     _OnKill?.Invoke();
                     Reset();
+                    GameManager.GM._dm.LastCheckPoint();
                     break;
                 
                 // Kill 100%, but wait delay
@@ -66,9 +66,9 @@ public class DangerWall : MonoBehaviour
     {
         yield return new WaitForSeconds(wait);
         
-        GameManager.GM._dm.LastCheckPoint();
         _OnKill?.Invoke();
         Reset();
+        GameManager.GM._dm.LastCheckPoint();
     }
 
     void Reset()
