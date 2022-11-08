@@ -18,18 +18,16 @@ public class DangerWall : MonoBehaviour
     [SerializeField] UnityEvent _OnCollide;
     [SerializeField] UnityEvent _OnKill;
     Coroutine _killCoroutine;
-    Spider _target;
 
     void OnTriggerEnter(Collider coll)
     {
         if (coll.gameObject.TryGetComponent<SurfaceTrigger>(out SurfaceTrigger st))
         {
-            _target = st.gameObject.GetComponentInParent<Spider>();
-
             switch (_killTarget)
             {
                 // Insta kill
                 case Danger.Kill:
+                    GameManager.GM._dm.LastCheckPoint();
                     _OnCollide?.Invoke();
                     _OnKill?.Invoke();
                     Reset();
@@ -67,7 +65,8 @@ public class DangerWall : MonoBehaviour
     IEnumerator KillCoroutine(float wait)
     {
         yield return new WaitForSeconds(wait);
-
+        
+        GameManager.GM._dm.LastCheckPoint();
         _OnKill?.Invoke();
         Reset();
     }
@@ -76,6 +75,5 @@ public class DangerWall : MonoBehaviour
     {
         if (_killCoroutine != null) StopCoroutine(_killCoroutine);
         _killCoroutine = null;
-        _target = null;
     }
 }

@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SafeFallingCollider : MonoBehaviour
 {
-    [SerializeField] Transform _spawnPoint;
+    [SerializeField] UnityEvent _OnCollide;
 
     private void OnCollisionEnter(Collision coll)
     {
-        coll.rigidbody.transform.position = _spawnPoint.position;
+        GameManager.GM._dm.LastCheckPoint();
+        _OnCollide?.Invoke();
     }
 }

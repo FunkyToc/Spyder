@@ -6,6 +6,11 @@ public class LevelManager : MonoBehaviour
 {
 
 
+    public void GoLastCheckpoint()
+    {
+
+    }
+
     public void ReloadLevel()
     {
 
