@@ -90,7 +90,7 @@ public abstract class CameraAbstract : MonoBehaviour {
         cam = GetComponent<Camera>();
         setupCamTarget();
         initializeRayCasting();
-        transform.parent = null; // Unparent the camera itself so it can move freely and use the target to lerp smoothly
+        //transform.parent = null; // Unparent the camera itself so it can move freely and use the target to lerp smoothly
 
         if (camUpperAngleMargin >= camLowerAngleMargin) {
             Debug.LogError("Upper Angle has to be smaller than Lower Angle");
