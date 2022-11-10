@@ -38,6 +38,11 @@ PrefabInstance:
       propertyPath: walkSpeed
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6602444994393196865, guid: 0f80abe9758af794c94d829c20727117,
+        type: 3}
+      propertyPath: walkableLayer.m_Bits
+      value: 1073741824
+      objectReference: {fileID: 0}
     - target: {fileID: 6757185163653745695, guid: 0f80abe9758af794c94d829c20727117,
         type: 3}
       propertyPath: stepCooldown
@@ -76,7 +81,7 @@ PrefabInstance:
     - target: {fileID: 8634589293312570784, guid: 0f80abe9758af794c94d829c20727117,
         type: 3}
       propertyPath: m_Name
-      value: Spider Controller
+      value: Spider Controller Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8634589293312570788, guid: 0f80abe9758af794c94d829c20727117,
         type: 3}
@@ -140,3 +145,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f80abe9758af794c94d829c20727117, type: 3}
+--- !u!1 &5079955295362907514 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8634589293038605798, guid: 0f80abe9758af794c94d829c20727117,
+    type: 3}
+  m_PrefabInstance: {fileID: 3579122948990920860}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4444086146449831234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5079955295362907514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4ad81886a53e640aebcd82b9923dd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
