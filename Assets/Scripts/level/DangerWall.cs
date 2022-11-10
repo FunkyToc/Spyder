@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEditor.Experimental.GraphView.GraphView;
+using UnityEngine.InputSystem;
 
 enum Danger
 {
@@ -12,11 +14,17 @@ enum Danger
 
 public class DangerWall : MonoBehaviour
 {
-    [SerializeField] Danger _killTarget;
-    [SerializeField] Collider _killCollider;
-    [SerializeField,Range(0f,10f)] float _killDelay = 3f;
-    [SerializeField] UnityEvent _OnCollide;
-    [SerializeField] UnityEvent _OnKill;
+    [Header("Params")]
+        [SerializeField] Danger _killTarget;
+        [SerializeField] Collider _killCollider;
+        [SerializeField,Range(0f,10f)] float _killDelay = 3f;
+        [SerializeField, Range(0f, 10f)] float _deathAnimTime = 1f;
+
+    [Header("Events")]
+        [SerializeField] UnityEvent _OnCollide;
+        [SerializeField] UnityEvent _OnExit;
+        [SerializeField] UnityEvent _OnKill;
+
     Coroutine _killCoroutine;
 
     void OnTriggerEnter(Collider coll)
@@ -29,8 +37,7 @@ public class DangerWall : MonoBehaviour
                 case Danger.Kill:
                     _OnCollide?.Invoke();
                     _OnKill?.Invoke();
-                    Reset();
-                    GameManager.GM._dm.LastCheckPoint();
+                    _killCoroutine = StartCoroutine(KillCoroutine(0));
                     break;
                 
                 // Kill 100%, but wait delay
@@ -56,6 +63,7 @@ public class DangerWall : MonoBehaviour
             {
                 // Cancel death
                 case Danger.KillAfterDelay:
+                    _OnExit?.Invoke();
                     Reset();
                     break;
             }
@@ -67,8 +75,8 @@ public class DangerWall : MonoBehaviour
         yield return new WaitForSeconds(wait);
         
         _OnKill?.Invoke();
+        GameManager.GM._dm.DeathWithRagdoll(_deathAnimTime);
         Reset();
-        GameManager.GM._dm.LastCheckPoint();
     }
 
     void Reset()
