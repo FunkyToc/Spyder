@@ -80,6 +80,7 @@ public class LookAtSlerp : MonoBehaviour
 
 
     private Vector3 _targetStartPos;
+    private Vector3 _targetStartUp;
     private Vector3 _lookPos;
     private bool standbyResetDelay = false;
     private GameObject _currentTarget = null;
@@ -95,6 +96,7 @@ public class LookAtSlerp : MonoBehaviour
         if (_detectionAreas == null) throw new Exception("No assigned detection areas: this gameobject won't be able to detect targets.");
 
         _targetStartPos = transform.position + transform.forward;
+        _targetStartUp = transform.position + transform.up;
         _lookPos = _targetStartPos;
         StartCoroutine(UpdateLookRotation());
     }

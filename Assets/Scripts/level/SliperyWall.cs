@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SliperyWall : MonoBehaviour
 {
-    [SerializeField,Range(0f,1f)] float _sliperyFactor = 0.5f;
+    [SerializeField,Range(0f,10f)] float _sliperyFactor = 0.5f;
     [SerializeField,Range(0f,1f)] float _speedMultiplier = 0.8f;
     Coroutine _sliperyCoroutine;
     Spider _spider;
@@ -40,7 +40,7 @@ public class SliperyWall : MonoBehaviour
             if (_sliperyCoroutine != null)
             {
                 StopCoroutine(_sliperyCoroutine);
-                _rb.AddForce(Vector3.up * _sliperyFactor * 100);
+                _rb.AddForce(Vector3.up * _sliperyFactor * 10);
                 _sliperyCoroutine = null;
             }
             
@@ -56,7 +56,7 @@ public class SliperyWall : MonoBehaviour
 
         while (_rb != null)
         {
-            _rb.AddForce(-Vector3.up * _sliperyFactor * 20);
+            _rb.AddForce(-Vector3.up * _sliperyFactor * 1.5f);
 
             yield return waiter;
         }
