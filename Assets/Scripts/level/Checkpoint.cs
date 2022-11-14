@@ -20,4 +20,10 @@ public class Checkpoint : MonoBehaviour
     {
         (_spawnSO as ISetSpawnSO).Set(_respawnPosition.transform);
     }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, _respawnPosition.position);
+    }
 }
