@@ -18,7 +18,11 @@ public class Checkpoint : MonoBehaviour
 
     void OnTriggerEnter(Collider coll)
     {
-        (_spawnSO as ISetSpawnSO).Set(_respawnPosition.transform);
+        if (coll.gameObject.GetComponentInParent<Rigidbody>().gameObject.GetComponent<PlayerTag>())
+        {
+            (_spawnSO as ISetSpawnSO).Set(_respawnPosition.transform);
+            Debug.Log(gameObject.name);
+        }
     }
 
     void OnDrawGizmosSelected()
