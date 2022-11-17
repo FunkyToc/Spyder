@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     void Init()
     {
+        Application.targetFrameRate = 75;
         _gm = this;
     }
 

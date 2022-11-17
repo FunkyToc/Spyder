@@ -11,13 +11,11 @@ public class StartGame : MonoBehaviour
     void Start()
     {
         _validAction.action.started += ValidAction;
-        _validAction.action.canceled += CancelAction;
     }
 
     void OnDestroy()
     {
         _validAction.action.started -= ValidAction;
-        _validAction.action.canceled -= CancelAction;
     }
 
     void ValidAction(InputAction.CallbackContext cc)
@@ -28,8 +26,6 @@ public class StartGame : MonoBehaviour
             _OnValidation?.Invoke();
         }
     }
-
-    void CancelAction(InputAction.CallbackContext cc) {}
 
     public void LoadScene(string sceneName)
     {
