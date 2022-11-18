@@ -12,10 +12,10 @@ public class DeathManager : MonoBehaviour
 
     void Start()
     {
-        _player.OnPlayerChanged += _player_OnPlayerChanged;
+        _player.OnPlayerChanged += _OnPlayerChanged;
     }
 
-    private void _player_OnPlayerChanged()
+    void _OnPlayerChanged()
     {
         _model = _player.Player.GetComponentInChildren<PlayerModelTag>().gameObject;
     }

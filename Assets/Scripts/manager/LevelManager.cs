@@ -65,6 +65,7 @@ public class LevelManager : MonoBehaviour
 
         _ccoroutine = null;
     }
+
     IEnumerator FadeIn()
     {
         float alpha;
