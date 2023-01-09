@@ -53,6 +53,7 @@ public class LevelManager : MonoBehaviour
 
         // load
         SceneManager.LoadScene(levelname);
+
         yield return new WaitForSeconds(0.2f);
 
         // fade out

@@ -12,6 +12,7 @@ public class DeathManager : MonoBehaviour
 
     void Start()
     {
+        _model = _player.Player.GetComponentInChildren<PlayerModelTag>().gameObject;
         _player.OnPlayerChanged += _OnPlayerChanged;
     }
 
@@ -46,8 +47,8 @@ public class DeathManager : MonoBehaviour
     {
         // death anim
         if (spawnRagdoll) SpawnRagdoll();
-        _player.Player.GetComponent<PlayerInput>().enabled = false;
         _model.SetActive(false);
+        _player.Player.GetComponent<PlayerInput>().enabled = false;
 
         yield return new WaitForSeconds(_deathAnimTime);
 
